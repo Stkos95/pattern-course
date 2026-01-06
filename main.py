@@ -75,8 +75,3 @@ class SpaceShip(MovableAbstract, RotateAbstract):
 
 class Torpeda(MovableAbstract):
     ...
-
-
-space = SpaceShip(coords=Vector(9,0), angle=None)
-
-move = Move(space)
