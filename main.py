@@ -41,19 +41,20 @@ class MovableAbstract:
         self.position = value
 
 
-class RotateAbstract:
+class RotatableAbstract:
 
     def __init__(self, *, angle: float, **kwargs):
         super().__init__()
-        if not isinstance(angle, (float, int)):
+        if not isinstance(angle, (float, int)) and angle is not None:
             raise ValueError('Incorrect value for angle')
         self.angle = angle
 
     def get_angle(self):
         return self.angle
 
-    def set_angle(self, value: int):
-        self.angle = value
+    def set_angle(self, value: float):
+        
+        self.angle = value % 360
 
 
 class Move:
@@ -68,8 +69,19 @@ class Move:
             raise ValueError('Can`t get object`s velocity')
         self.movable.set_position(self.movable.get_position() + self.movable.get_velocity())
 
+class Rotate:
 
-class SpaceShip(MovableAbstract, RotateAbstract):
+    def __init__(self, rotatable_object: RotatableAbstract, angle: float):
+        self.rotatable = rotatable_object
+        self.angle = angle
+
+    def execute(self):
+        if not self.rotatable.get_angle():
+            raise ValueError('Can`t get object`s start angle')
+        self.rotatable.set_angle(self.rotatable.get_angle() + self.angle)
+
+
+class SpaceShip(MovableAbstract, RotatableAbstract):
     ...
 
 

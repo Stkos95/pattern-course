@@ -1,5 +1,5 @@
 import pytest
-from main import SpaceShip, Vector, Move
+from main import SpaceShip, Vector, Move, Rotate
 
 
 class TestMovable:
@@ -23,3 +23,21 @@ class TestMovable:
         with pytest.raises(ValueError) as err:
             move.execute()
             space_ship.get_position()
+
+
+
+class TestRotatable:
+
+    def test_rotate_correct(self):
+        space_ship = SpaceShip(coords=Vector(1,1), velocity=Vector(7, -5), angle=130)
+        rotate = Rotate(space_ship, 120)
+        rotate.execute()
+        assert space_ship.get_angle() == 250
+
+
+    def test_rotate_incorrect(self):
+        space_ship = SpaceShip(coords=Vector(1,1), velocity=Vector(7, -5), angle=None)
+        rotate = Rotate(space_ship, 120)
+        with pytest.raises(ValueError) as err:    
+            rotate.execute()
+        assert str(err.value) == 'Can`t get object`s start angle'
